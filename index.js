@@ -1,12 +1,20 @@
 const express = require('express')
+const jwt = require('jsonwebtoken') // token generator
+const crypto = require('crypto') // cryptography
 const app = express()
 const port = 3000
-const jwt = require("jsonwebtoken")
-app.use(express.json())
+app.use(express.json()) // same with body-parser
+
+const generateToken = () => {
+    const buffer = crypto.randomBytes(64)
+    const token = buffer.toString('hex')
+    return token
+}
+const secret = generateToken() // for secret
 
 const verify = (req, res, next) => {
     const bearer = req.headers.bearer
-    jwt.verify(bearer, 'secret', { expiresIn: '30s' }, (err, data) => {
+    jwt.verify(bearer, secret, { expiresIn: '25s' }, (err, data) => {
         if (err) {
             console.log(err.message)
             res.send(err)
@@ -30,7 +38,7 @@ app.post('/login', (req, res) => {
         email: "friko@gmail.com",
         username: "friko"
     }
-    jwt.sign(user, 'secret', { expiresIn: '30s' }, (err, token) => {
+    jwt.sign(user, secret, { expiresIn: '30s' }, (err, token) => {
         if (err) {
             console.log(err)
             res.json({
@@ -46,7 +54,6 @@ app.post('/login', (req, res) => {
         })
     })
 })
-
 
 app.put('/', (req, res) => {
     res.send("update berhasil")
