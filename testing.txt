@@ -1,0 +1,17 @@
+use http://localhost:3000/ 
+
+GET,POST,PUT,DELETE
+
+NPM INSTALL
+NPM START / NPM RUN START-DEV
+
+Try JWT:
+1. POST http://localhost:3000/login 
+2. Copy the bearer token without ""
+3. POST http://localhost:3000/
+4. Add this 
+Header: {
+    Content-Type: application/json
+    bearer: TOKEN FROM STEP 2
+} 
+5. Try it and try to change the token input / wait till the token expired
